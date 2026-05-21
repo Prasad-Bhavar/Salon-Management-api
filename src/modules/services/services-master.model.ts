@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 
 import { ServiceCategories } from "~/modules/services/service-categories.model";
-import { SalonServices } from "~/modules/services/salon-services.model";
+import { SalonServices } from "~/modules/salon-services/salon-services.model";
 import { BarberServices } from "~/modules/barbers/barber-services.model";
 
 @Entity("services_master")
@@ -76,4 +76,6 @@ export class ServicesMaster {
 
     @OneToMany(() => BarberServices, (barberService) => barberService.service)
     barber_services!: BarberServices[];
+
+
 }

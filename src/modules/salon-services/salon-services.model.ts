@@ -4,6 +4,8 @@ import {
     Column,
     ManyToOne,
     JoinColumn,
+    UpdateDateColumn,
+    CreateDateColumn,
 } from "typeorm";
 
 import { Salons } from "~/modules/salons/salons.model";
@@ -21,10 +23,8 @@ export class SalonServices {
     @JoinColumn({ name: "salon_id" })
     salon!: Salons;
 
-    @ManyToOne(() => ServicesMaster, {
-        onDelete: "CASCADE",
-    })
-    @JoinColumn({ name: "service_id" })
+    @ManyToOne(() => ServicesMaster, (service) => service.salon_services, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "service_id" }) // ✅ THIS WAS MISSING — add this
     service!: ServicesMaster;
 
     // Price in smallest currency unit or normal rupees
@@ -44,5 +44,21 @@ export class SalonServices {
         default: true,
     })
     status!: boolean;
+
+    @CreateDateColumn({
+        type: "timestamp",
+    })
+    created_at!: Date;
+
+    @UpdateDateColumn({
+        type: "timestamp",
+    })
+    updated_at!: Date;
+
+    @Column({
+        type: "text",
+        nullable: true,
+    })
+    description!: string;
 
 }
