@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "~/common/utils/jwt";
 import { AppDataSource } from "~/config/database";
-import { Users } from "~/modules/user/user.model";
-
+import { Users } from "~/modules/users/users.model";
+import { Salons } from "~/modules/salons/salons.model";
 export interface AuthRequest extends Request {
     user?: {
         id: number;
         email: string;
         role: string;
+        salon_id?: number;
     };
 }
 
@@ -17,9 +18,13 @@ export const authMiddleware = async (
     next: NextFunction
 ) => {
     try {
+
         const authHeader = req.headers.authorization;
 
-        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        if (
+            !authHeader ||
+            !authHeader.startsWith("Bearer ")
+        ) {
             return res.status(401).json({
                 statusCode: 401,
                 message: "Unauthorized: Token missing",
@@ -30,29 +35,61 @@ export const authMiddleware = async (
 
         const decoded = verifyToken(token);
 
-        // Check user still exists
-        const userRepo = AppDataSource.getRepository(Users);
-        const user = await userRepo.findOne({
-            where: { id: decoded.id },
-            relations: ["role"],
-        });
+        const userRepo =
+            AppDataSource.getRepository(Users);
 
-        if (!user || user.status !== "active") {
+        const salonRepo =
+            AppDataSource.getRepository(Salons);
+
+        const user =
+            await userRepo.findOne({
+                where: {
+                    id: decoded.id,
+                },
+                relations: ["role"],
+            });
+
+        if (
+            !user ||
+            user.status !== "active"
+        ) {
             return res.status(401).json({
                 statusCode: 401,
                 message: "Unauthorized: Invalid user",
             });
         }
 
+        //
+        // FETCH OWNER SALON
+        //
+
+        let salonId: number | undefined;
+
+        if (user.role?.slug === "owner") {
+
+            const salon =
+                await salonRepo.findOne({
+                    where: {
+                        owner: {
+                            id: user.id,
+                        },
+                    },
+                });
+
+            salonId = salon?.id;
+        }
+
         req.user = {
             id: user.id,
             email: user.email,
             role: user.role?.slug || "",
-
+            salon_id: salonId,
         };
 
         next();
+
     } catch (error) {
+
         return res.status(401).json({
             statusCode: 401,
             message: "Session Expired, Login again",

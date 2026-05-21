@@ -31,6 +31,7 @@ export class Addresses {
     @Column({
         type: "varchar",
         length: 150,
+        nullable: true,
     })
     area!: string;
 
