@@ -7,6 +7,9 @@ import authRoutes from "~/modules/auth/auth.routes";
 import salonServiceRoutes from "~/modules/salon-services/owner-service.routes";
 import { authMiddleware } from "~/middleware/auth.middleware";
 import barberRoutes from "~/modules/barbers/barbers.routes";
+import favouriteSalonsRoutes from "~/modules/favourite-salons/favourite-salons.routes";
+import exploreSalonsRoutes from "~/modules/explore-salons/explore-salons.routes";
+import slotLockingRoutes from "~/modules/slot-locking/slot-locking.routes";
 const router = Router();
 
 router.use("/health-check", () => {
@@ -23,4 +26,10 @@ router.use("/settings", authMiddleware, settingRoutes);
 router.use('/salon-services', authMiddleware, salonServiceRoutes);
 router.use('/barbers', authMiddleware, barberRoutes);
 
+
+//customer routes
+router.use("/favourite-salons", authMiddleware, favouriteSalonsRoutes);
+router.use("/explore-salons", authMiddleware, exploreSalonsRoutes);
+
+router.use("/slot-locking", authMiddleware, slotLockingRoutes);
 export default router;

@@ -17,8 +17,8 @@ import { Barbers } from "~/modules/barbers/barbers.model";
 import { Bookings } from "~/modules/bookings/bookings.model";
 import { BookingSlots } from "~/modules/bookings/booking-slots.model";
 import { BlockedSlots } from "~/modules/bookings/blocked-slots.model";
-import { SlotLocks } from "~/modules/bookings/slot-locks.model";
-import { Settlements } from "~/modules/payments/settlements.model";
+import { SlotLocks } from "~/modules/slot-locking/slot-locks.model";
+import { Settlements } from "~/modules/settlements/settlements.model";
 import { Reviews } from "~/modules/reviews/reviews.model";
 
 @Entity("salons")
