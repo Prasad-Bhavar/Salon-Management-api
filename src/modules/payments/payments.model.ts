@@ -10,7 +10,7 @@ import {
 } from "typeorm";
 
 import { Bookings } from "~/modules/bookings/bookings.model";
-import { Settlements } from "~/modules/payments/settlements.model";
+import { Settlements } from "~/modules/settlements/settlements.model";
 import { PaymentGatewayLogs } from "~/modules/payments/payment-gateway-logs.model";
 
 @Entity("payments")

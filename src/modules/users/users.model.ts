@@ -14,7 +14,7 @@ import { Addresses } from "~/modules/addresses/addresses.model";
 import { Salons } from "~/modules/salons/salons.model";
 import { Barbers } from "~/modules/barbers/barbers.model";
 import { Bookings } from "~/modules/bookings/bookings.model";
-import { SlotLocks } from "~/modules/bookings/slot-locks.model";
+import { SlotLocks } from "~/modules/slot-locking/slot-locks.model";
 import { Notifications } from "~/modules/notifications/notifications.model";
 import { Reviews } from "~/modules/reviews/reviews.model";
 
